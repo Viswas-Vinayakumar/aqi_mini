@@ -4,7 +4,10 @@ import requests
 
 
 # Load historical AQI
-df = pd.read_csv("ml/data.csv", parse_dates=["date"])
+response = requests.get("http://127.0.0.1:8000/aqi/raw")
+df = pd.DataFrame(response.json())
+df["date"] = pd.to_datetime(df["date"])
+
 
 # Sort by time (never skip this)
 df = df.sort_values("date")
